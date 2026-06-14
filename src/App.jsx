@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
@@ -6,21 +6,90 @@ import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+
+  const GITHUB_USERNAME = "Gustav-HL";
+
+ useEffect(() => {
+  const fetchAllProjects = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const fetchGithubData = await fetch(
+        `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated`
+      );
+      if (!fetchGithubData.ok) throw new Error('Kunde inte hämta dina egna projekt');
+      const data = await fetchGithubData.json();
+      const myProjects = data.filter(repo => {
+        return !repo.fork && repo.topics.includes('portfolio');
+      });
+      const otherProjects = [
+        "Shania-a/Webbteknik-projekt",
+        "Shania-a/OOP-Project",
+        "GoblinBuilds/ChronoLogical"
+      ];
+
+      const fetchOtherRepos = otherProjects.map(async (path) => {
+        const res = await fetch(`https://api.github.com/repos/${path}`);
+        if (res.ok) return res.json();
+        return null; 
+      });
+
+      const externalData = await Promise.all(fetchOtherRepos);
+
+      const combinedProjects = [...myProjects, ...externalData];
+
+      combinedProjects.sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at));
+
+      setProjects(combinedProjects);
+
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchAllProjects();
+}, [GITHUB_USERNAME]);
 
   return (
     <>
       <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {projects.map((repo) => (
+          <div 
+            key={repo.id} 
+            className=""
+          >
+            <div>
+              <h3 className="">
+                {repo.name.replace(/-/g, ' ')}
+              </h3>
+              <p className="">
+                {repo.description || "No description :("}
+              </p>
+            </div>
+
+            <div className="flex justify-between items-center">
+              <span className="">
+                {repo.language || "Blandat"}
+              </span>
+              <a 
+                href={repo.html_url} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className=""
+              >
+                Go to github &rarr;
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
         <button
           type="button"
           className="counter"
