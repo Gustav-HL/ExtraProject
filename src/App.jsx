@@ -18,10 +18,26 @@ function App() {
     try {
       setLoading(true);
       setError(null);
+
+      const CACHE_KEY = 'github_portfolio_projects';
+      const CACHE_TIME_KEY = 'github_portfolio_time';
+      const ONE_DAT = 24 * 60 * 60 * 1000; 
+
+      const cachedData = localStorage.getItem(CACHE_KEY);
+      const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
+
+      if (cachedData && cachedTime && (Date.now() - Number(cachedTime) < ONE_DAT)) {
+        console.log("local storage used");
+        setProjects(JSON.parse(cachedData));
+        setLoading(false);
+        return; 
+      }
+
       const fetchGithubData = await fetch(
         `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated`
       );
-      if (!fetchGithubData.ok) throw new Error('Kunde inte hämta dina egna projekt');
+      if (!fetchGithubData.ok) throw new Error('Coudnt fetch data.');
+
       const data = await fetchGithubData.json();
       const myProjects = data.filter(repo => {
         return !repo.fork && repo.topics.includes('portfolio');
@@ -39,12 +55,12 @@ function App() {
       });
 
       const externalData = await Promise.all(fetchOtherRepos);
-
       const combinedProjects = [...myProjects, ...externalData];
 
       combinedProjects.sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at));
-
       setProjects(combinedProjects);
+      localStorage.setItem(CACHE_KEY, JSON.stringify(combinedProjects));
+      localStorage.setItem(CACHE_TIME_KEY, Date.now().toString());
 
     } catch (err) {
       setError(err.message);
