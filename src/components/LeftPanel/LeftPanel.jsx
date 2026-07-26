@@ -1,17 +1,38 @@
-export function LeftPanel({ projects }) {
+export function LeftPanel() {
   return (
-    <div className="w-1/2 h-screen overflow-y-auto p-12 border-r border-gray-200">
-      <h2 className="text-3xl font-bold mb-8">GHL</h2>
-      
-      <div className="flex flex-col gap-12">
-        {projects.map((repo, index) => (
-          <div key={repo.id || index} className="p-6 bg-gray-50 rounded-xl border border-gray-100">
-            <span className="text-sm font-mono text-indigo-600">0{index + 1}</span>
-            <h3 className="text-2xl font-bold text-gray-900 mt-1 mb-2">{repo.name.replace(/-/g, ' ')}</h3>
-            <p className="text-gray-600">{repo.description || "Ingen beskrivning tillgänglig."}</p>
+    <div className="w-full h-screen overflow-y-auto p-8 sm:p-16 border-r border-gray-200 snap-y snap-mandatory">
+      <section className="h-screen w-full flex items-center justify-center snap-start">
+        <blockquote className="max-w-xl text-center">
+          <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl font-normal tracking-tight text-gray-900 leading-[1.15]">
+            Let’s Build Something Brilliant
+          </h1>
+        </blockquote>
+      </section>
+      <section className="min-h-screen w-full flex flex-col justify-center py-20 snap-start">
+        <div className="max-w-xl">
+          <h2 className="font-serif text-4xl sm:text-5xl font-normal text-gray-900 mb-6">
+            About Me
+          </h2>
+          <div className="space-y-4 text-gray-600 leading-relaxed font-sans text-lg">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            </p>
+            <p>
+              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
           </div>
-        ))}
-      </div>
+        </div>
+      </section>
+      <section className="min-h-screen w-full flex flex-col justify-center py-20 snap-start">
+        <div className="max-w-xl">
+          <h2 className="font-serif text-4xl sm:text-5xl font-normal text-gray-900 mb-8">
+            My Competence
+          </h2>
+
+ 
+        </div>
+      </section>
+
     </div>
   )
 }

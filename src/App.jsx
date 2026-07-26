@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
+import { Navbar } from "./components/Nav/Navbar.jsx"
 import { LeftPanel } from "./components/LeftPanel/LeftPanel.jsx"
 import { RightPanel } from "./components/RightPanel/RightPanel.jsx"
 import { Calendar } from "./components/Calendar/Calendar.jsx"
@@ -74,14 +74,28 @@ function App() {
   if (error) return <div className="p-8 text-red-500">Error {error}</div>
 
   return (
-    <>
-      <section className="flex h-screen w-full bg-white overflow-hidden">
-        <LeftPanel projects={projects} />
-        <RightPanel projects={projects} />
-      </section>
+    <main className="relative w-full h-screen overflow-hidden bg-white">
+      <Navbar />
+      <div className="fixed top-1/2 -translate-y-1/2 -left-10 sm:-left-20 z-20 pointer-events-none select-none flex flex-col items-center gap-1 sm:gap-3 font-serif text-[26vh] sm:text-[32vh] font-bold text-gray-900/10 tracking-tighter leading-[1]">
+        <span className="rotate-[15deg]">G</span>
+        <span className="rotate-[15deg]">H</span>
+        <span className="rotate-[15deg]">L</span>
+      </div>
+      <section className="group/container flex h-screen w-full bg-white overflow-hidden">
 
-      <Calendar username={GITHUB_USERNAME} />
-    </>
+        <div className="group/left w-1/2 group-hover/container:w-[35%] hover:!w-[45%] transition-all duration-500 ease-in-out h-full">
+          <div className="w-full h-full transform transition-transform duration-500 ease-in-out scale-[0.97] group-hover/left:scale-100 origin-center">
+            <LeftPanel />
+          </div>
+        </div>
+        <div className="group/right w-1/2 group-hover/container:w-[55%] hover:!w-[65%] transition-all duration-500 ease-in-out h-full">
+          <div className="w-full h-full transform transition-transform duration-500 ease-in-out scale-[0.97] group-hover/right:scale-100 origin-center">
+            <RightPanel projects={projects} />
+          </div>
+        </div>
+
+      </section>
+    </main>
   )
 }
 
