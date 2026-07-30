@@ -3,10 +3,12 @@ import gsap from 'gsap'
 import Lenis from 'lenis'
 import { useGSAP } from '@gsap/react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Navbar } from "./components/Nav/Navbar.jsx"
-import { Calendar } from "./components/Calendar/Calendar.jsx"
-import { ProjectSection } from "./components/ProjectSection/ProjectSection.jsx"
+import Navbar from "./components/Nav/Navbar.jsx"
+import Calendar from "./components/Calendar/Calendar.jsx"
+import ProjectSection from "./components/ProjectSection/ProjectSection.jsx"
+import Wind from "./components/Wind.jsx"
 import './App.css'
+import IntroPage from './components/IntroPage/IntroPage.jsx'
 
 function App() {
   // const [projects, setProjects] = useState([])
@@ -70,15 +72,13 @@ function App() {
   // }, [GITHUB_USERNAME])
 
   // if (error) return <div className="p-8 text-red-500">Error {error}</div>
-useEffect(() => {
-    // 1. Initialisera Lenis
+  useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.2,      // Hur mjuk/långsam scrollen ska vara
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Mjuk övergång
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
     })
 
-    // 2. Synka Lenis med GSAP ScrollTrigger
     lenis.on('scroll', ScrollTrigger.update)
 
     gsap.ticker.add((time) => {
@@ -94,9 +94,11 @@ useEffect(() => {
   return (
     <>
       <Navbar />
+      <Wind />
+      <IntroPage />
 
       <ProjectSection />
-  </>
+    </>
   )
 }
 

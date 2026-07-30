@@ -1,0 +1,45 @@
+.frontpage-quote {
+    position: absolute;
+    z-index: 10;
+    top: 34%;
+    right: 16%;
+    left: auto;
+    transform: none;
+    color: #fff;
+    font-size: 6.5px;
+    text-align: right;
+}
+
+.hero-line {
+  stroke: #ffffff;      
+  stroke-width: 1px;    
+  opacity: 0.8;        
+}
+
+.bottom-right-boxes {
+    position: absolute;
+    bottom: 0%;
+    right: 0%;
+    display: flex;        
+    z-index: 10;
+    width: 75vw;
+}
+
+.squeeze-box {
+    flex: 1;         
+    height: 60px;         
+    transform-origin: right center; 
+}
+
+.box-1 {
+    background-color: #F5DFBB; 
+}
+
+.box-2 {
+    background-color: #562C2C; 
+}
+
+.box-3 {
+    background-color: #F2542D; 
+}
+

@@ -1,6 +1,6 @@
 import { GitHubCalendar } from 'react-github-calendar'
 
-export function Calendar({ username }) {
+const Calendar = ({ username }) => {
   return (
     <section id="next-steps" className="py-16 bg-gray-50 flex flex-col items-center justify-center">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">GitHub Activity</h2>
@@ -18,3 +18,4 @@ export function Calendar({ username }) {
     </section>
   )
 }
+export default Calendar 
