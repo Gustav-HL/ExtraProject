@@ -7,6 +7,7 @@ import Navbar from "./components/Nav/Navbar.jsx"
 import Calendar from "./components/Calendar/Calendar.jsx"
 import ProjectSection from "./components/ProjectSection/ProjectSection.jsx"
 import Wind from "./components/Wind.jsx"
+import Light from "./components/Light.jsx"
 import './App.css'
 import IntroPage from './components/IntroPage/IntroPage.jsx'
 
@@ -91,14 +92,16 @@ function App() {
       lenis.destroy()
     }
   }, [])
-  return (
-    <>
-      <Navbar />
+return (
+    <div className="relative min-h-screen w-full">
+      <Light />
       <Wind />
-      <IntroPage />
-
-      <ProjectSection />
-    </>
+      <div className="relative z-10">
+        <Navbar />
+        <IntroPage />
+        <ProjectSection />
+      </div>
+    </div>
   )
 }
 
