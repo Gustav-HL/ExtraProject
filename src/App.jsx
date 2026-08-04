@@ -73,6 +73,10 @@ function App() {
   // }, [GITHUB_USERNAME])
 
   // if (error) return <div className="p-8 text-red-500">Error {error}</div>
+
+  const [currentTheme, setCurrentTheme] = useState('teal')
+
+
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
@@ -94,12 +98,12 @@ function App() {
   }, [])
 return (
     <div className="relative min-h-screen w-full">
-      <Light />
+      <Light theme={currentTheme} />
       <Wind />
       <div className="relative z-10">
         <Navbar />
         <IntroPage />
-        <ProjectSection />
+        <ProjectSection onThemeChange={setCurrentTheme} />
       </div>
     </div>
   )

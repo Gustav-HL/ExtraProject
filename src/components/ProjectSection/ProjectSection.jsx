@@ -1,175 +1,262 @@
 import { useEffect, useRef, useMemo } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import ProjectContent from './ProjectContent.jsx'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const ProjectSection = () => {
-    const wrapperRef = useRef(null)
-    const containerRef = useRef(null)
-    const projectData = [
-        {
-            id: 1,
-            tag: '01 / ARCHITECTURE',
-            title: 'Minimalist Spatial Concept',
-            desc: 'An exploration of natural light and raw textures in modern residential design.',
-            img: 'https://picsum.photos/id/1018/1200/800',
-        },
-        {
-            id: 2,
-            tag: '02 / INTERIOR',
-            title: 'Monochrome Living',
-            desc: 'Reducing cognitive noise through clean geometry and warm timber accents.',
-            img: 'https://picsum.photos/id/1067/1200/800',
-        },
-        {
-            id: 3,
-            tag: '03 / DIGITAL',
-            title: 'Interactive Interfaces',
-            desc: 'Focusing on fluid animations, clear hierarchy, and seamless user experiences.',
-            img: 'https://picsum.photos/id/1060/1200/800',
-        },
-        {
-            id: 4,
-            tag: '04 / FRIENDS',
-            title: 'I worked with some amazing people!',
-            desc: 'Glen, Sven, Pelle Persson',
-            img: 'https://picsum.photos/id/1040/1200/800',
-        }
-    ]
-
-    const projects = useMemo(() => {
-        const imageYOffsets = [
-            '-translate-y-12 sm:-translate-y-20',
-            'translate-y-10 sm:translate-y-16',
-            '-translate-y-4 sm:-translate-y-6',
-            'translate-y-0'
-        ]
-
-        const textVerticalPositions = [
-            '-top-16 sm:-top-24',
-            'top-4',
-            'top-1/3',
-            '-bottom-12',
-            '-bottom-20 sm:-bottom-28'
-        ]
-
-        const textHorizontalOffsets = [
-            'left-1/4 sm:left-1/3',
-            'left-1/2 sm:left-2/3',
-            'left-full ml-4 sm:ml-12',
-            '-ml-12 sm:-ml-24'
-        ]
-
-        return projectData.map((project) => {
-            const imgY = imageYOffsets[Math.floor(Math.random() * imageYOffsets.length)]
-            const textY = textVerticalPositions[Math.floor(Math.random() * textVerticalPositions.length)]
-            const textX = textHorizontalOffsets[Math.floor(Math.random() * textHorizontalOffsets.length)]
-            const extraMarginRight = 120 + Math.floor(Math.random() * 160)
-
-            return {
-                ...project,
-                imageYClass: imgY,
-                textPositionClass: `${textY} ${textX}`,
-                marginRight: `${extraMarginRight}px`,
-                speed: -(500 + Math.floor(Math.random() * 350))
+const data = [
+    {
+        id: 'sec-1',
+        title: 'Projekt Huoan 1',
+        theme: 'teal',
+        content: [
+            {
+                id: 1,
+                title: 'Minimalist Spatial Concept',
+                desc: 'An exploration of natural light and raw textures in modern residential design.',
+                img: 'https://picsum.photos/id/1018/1200/800',
+            },
+            {
+                id: 2,
+                title: 'Monochrome Living',
+                desc: 'Reducing cognitive noise through clean geometry and warm timber accents.',
+                img: 'https://picsum.photos/id/1067/1200/800',
+            },
+            {
+                id: 3,
+                tag: '03 / DIGITAL',
+                title: 'Interactive Interfaces',
+                desc: 'Focusing on fluid animations, clear hierarchy, and seamless user experiences.',
+                img: 'https://picsum.photos/id/1060/1200/800',
+            },
+            {
+                id: 4,
+                title: 'Samarbeten i Sektion 1',
+                desc: 'Projekt skapade tillsammans med fina kollegor och vänner.',
+                isEndCard: true,
+                collaborators: [
+                    { name: 'Shania', github: 'https://github.com/Shania-a', role: 'Webbteknik & OOP' },
+                    { name: 'GoblinBuilds', github: 'https://github.com/GoblinBuilds', role: 'ChronoLogical' }
+                ]
             }
-        })
+        ]
+    },
+    {
+        id: 'sec-2',
+        title: 'Projekt dos',
+        theme: 'night',
+        content: [
+            {
+                id: 5,
+                title: 'Generative Shader Work',
+                desc: 'Real-time WebGL graphics exploring raymarching and particle physics.',
+                img: 'https://picsum.photos/id/1060/1200/800',
+            },
+            {
+                id: 6,
+                title: 'Samarbeten i Sektion 2',
+                desc: 'Projekt skapade tillsammans med mina fantastiska teammedlemmar.',
+                isEndCard: true,
+                collaborators: [
+                    { name: 'Pelle Persson', github: 'https://github.com/PellePersson', role: 'UX & Frontend' }
+                ]
+            }
+        ]
+    },
+    {
+        id: 'sec-3',
+        title: 'Projekt tres',
+        theme: 'emerald',
+        content: [
+            {
+                id: 7,
+                title: 'Minimalist Spatial Concept',
+                desc: 'An exploration of natural light and raw textures in modern residential design.',
+                img: 'https://picsum.photos/id/1018/1200/800',
+            },
+            {
+                id: 8,
+                title: 'Monochrome Living',
+                desc: 'Reducing cognitive noise through clean geometry and warm timber accents.',
+                img: 'https://picsum.photos/id/1067/1200/800',
+            },
+            {
+                id: 9,
+                tag: '03 / DIGITAL',
+                title: 'Interactive Interfaces',
+                desc: 'Focusing on fluid animations, clear hierarchy, and seamless user experiences.',
+                img: 'https://picsum.photos/id/1060/1200/800',
+            },
+            {
+                id: 10,
+                title: 'Samarbeten i Sektion 1',
+                desc: 'Projekt skapade tillsammans med fina kollegor och vänner.',
+                isEndCard: true,
+                collaborators: [
+                    { name: 'Shania', github: 'https://github.com/Shania-a', role: 'Webbteknik & OOP' },
+                    { name: 'GoblinBuilds', github: 'https://github.com/GoblinBuilds', role: 'ChronoLogical' }
+                ]
+            }
+        ]
+    }
+]
+
+const ProjectSection = ({ onThemeChange }) => {
+    const mainWrap = useRef(null)
+    const sectionWrapperRefs = useRef([])
+    const horizontalTrackRefs = useRef([])
+    const swipeSizeRefs = useRef([])
+    const swipeContentRefs = useRef([])
+    const curtainBackgroundRefs = useRef([])
+
+    // Format content with random positions and parallax speeds.
+    const formatContent = (data) => {
+        const imageYOffsets = ['-translate-y-4', 'translate-y-4', 'translate-y-0']
+        const textVerticalPositions = ['top-1/2 -translate-y-1/2', 'top-1/3', 'bottom-1/3']
+        const textHorizontalOffsets = ['left-8 sm:left-16', 'left-1/4', 'left-1/3', '-left-8 sm:-left-16']
+
+        return data.map((project) => ({
+            ...project,
+            imageYClass: imageYOffsets[Math.floor(Math.random() * imageYOffsets.length)],
+            textPositionClass: `${textVerticalPositions[Math.floor(Math.random() * textVerticalPositions.length)]} ${textHorizontalOffsets[Math.floor(Math.random() * textHorizontalOffsets.length)]}`,
+            marginRight: `${160 + Math.floor(Math.random() * 160)}px`,
+            speed: -(500 + Math.floor(Math.random() * 350))
+        }))
+    }
+
+    // Memorera den formatterade projektdata för alla sektioner
+    const sections = useMemo(() => {
+        return data.map((sec) => ({
+            ...sec,
+            content: formatContent(sec.content)
+        }))
     }, [])
 
     useEffect(() => {
-        const container = containerRef.current
-        const wrapper = wrapperRef.current
-        const context = gsap.context(() => {
-            const getScrollAmount = () => -(container.scrollWidth - window.innerWidth)
+        const wrapper = mainWrap.current
+        if (!wrapper) return
 
-            const timeline = gsap.timeline({
+        const context = gsap.context(() => {
+            // Get the total scroll width 
+            let totalScrollWidth = 0
+            horizontalTrackRefs.current.forEach((c) => {
+                if (c) totalScrollWidth += c.scrollWidth
+            })
+
+            // GSAP settings
+            sections.forEach((sec, index) => {
+                if (index === 0) {
+                    if (sectionWrapperRefs.current[0]) gsap.set(sectionWrapperRefs.current[0], { display: 'block' })
+                } else {
+                    if (swipeSizeRefs.current[index]) gsap.set(swipeSizeRefs.current[index], { xPercent: 100 })
+                    if (swipeContentRefs.current[index]) gsap.set(swipeContentRefs.current[index], { xPercent: -100 })
+                    if (curtainBackgroundRefs.current[index]) gsap.set(curtainBackgroundRefs.current[index], { opacity: 1 })
+                }
+            })
+
+            const scrollDuration = 3
+            const wipeDuration = 1
+            const extraDrift = 120
+
+            // Create the main timeline that will be scrolled through
+            const scrollHandler = gsap.timeline({
                 scrollTrigger: {
                     trigger: wrapper,
                     start: 'top top',
-                    end: () => `+=${container.scrollWidth}`,
+                    end: () => `+=${totalScrollWidth + window.innerWidth * sections.length}`,
                     pin: true,
                     scrub: 1,
                     invalidateOnRefresh: true,
                 },
             })
 
-            timeline.to(container, {
-                x: getScrollAmount,
-                ease: 'none',
-            }, 0)
+            // Loop through the data and build the timeline
+            sections.forEach((sec, i) => {
+                const track = horizontalTrackRefs.current[i]
+                if (!track) return
 
-            timeline.to('.slow-title', {
-                x: -120,
-                ease: 'none',
-            }, 0)
+                const getScrollAmount = () => -(track.scrollWidth - window.innerWidth)
+                const currentStartTime = scrollHandler.duration()
 
-            const textElements = gsap.utils.toArray('.parallax-text')
-            textElements.forEach((text, i) => {
-                timeline.to(
-                    text,
-                    {
-                        x: projects[i]?.speed || -650,
+                scrollHandler.to(track, {
+                    x: getScrollAmount,
+                    ease: 'none',
+                    duration: scrollDuration
+                }, currentStartTime)
+
+                scrollHandler.to(`.slow-title-${i}`, {
+                    x: -160,
+                    ease: 'none',
+                    duration: scrollDuration
+                }, currentStartTime)
+
+                gsap.utils.toArray(`.parallax-text-${i}`).forEach((text, itemIndex) => {
+                    scrollHandler.to(text, {
+                        x: sec.content[itemIndex]?.speed || -650,
                         ease: 'none',
-                    },
-                    0
-                )
+                        duration: scrollDuration
+                    }, currentStartTime)
+                })
+
+                if (i < sections.length - 1) {
+                    const nextIndex = i + 1
+                    const wipeStart = scrollHandler.duration()
+
+                    scrollHandler.to(track, {
+                        x: () => getScrollAmount() - extraDrift,
+                        ease: 'none',
+                        duration: wipeDuration
+                    }, wipeStart)
+
+                    // At the section transitions animate a swipe
+                    scrollHandler
+                        .to(swipeSizeRefs.current[nextIndex], { xPercent: 0, ease: 'power2.inOut', duration: wipeDuration }, wipeStart)
+                        .to(swipeContentRefs.current[nextIndex], { xPercent: 0, ease: 'power2.inOut', duration: wipeDuration }, wipeStart)
+                        .add(() => {
+                            const isMovingForward = scrollHandler.scrollTrigger.direction > 0
+                            const activeSec = isMovingForward ? sections[nextIndex] : sections[i]
+
+                            // Hide the previous content
+                            if (isMovingForward && sectionWrapperRefs.current[i]) {
+                                gsap.set(sectionWrapperRefs.current[i], { display: 'none' })
+                            } else if (!isMovingForward && sectionWrapperRefs.current[i]) {
+                                gsap.set(sectionWrapperRefs.current[i], { display: 'block' })
+                            }
+
+                            if (onThemeChange && activeSec.theme) {
+                                onThemeChange(activeSec.theme)
+                            }
+                        }, '>')
+                        .to(curtainBackgroundRefs.current[nextIndex], { opacity: 0, duration: 0.4, ease: 'power1.out' }, '>')
+                }
             })
-        })
+
+        }, mainWrap)
 
         return () => context.revert()
-    }, [projects])
+    }, [sections, onThemeChange])
 
     return (
-        <div className="w-full text-white">
-
-            <div
-                ref={wrapperRef}
-                className="w-full h-screen overflow-hidden flex items-center  relative"
-            >
-                <div className="absolute inset-0 z-0 flex flex-col justify-center px-12 sm:px-24 pointer-events-none">
-                    <h1 className="slow-title font-serif text-6xl sm:text-[9.5vw] font-normal leading-none tracking-tight text-white whitespace-nowrap opacity-90 will-change-transform">
-                        Projekt Huoan 1
-                    </h1>
-                </div>
-                <div
-                    ref={containerRef}
-                    className="flex flex-nowrap w-max shrink-0 items-center z-10 relative will-change-transform pl-[100vw]"
-                >
-                    <div className="flex items-center px-16 sm:px-32  h-screen">
-                        {projects.map((item) => (
-                            <div
-                                key={item.id}
-                                className="relative flex items-center shrink-0 my-auto"
-                                style={{ marginRight: item.marginRight }}
-                            >
-                                <div className={`w-[70vw] sm:w-[500px] h-[48vh] sm:h-[52vh] rounded-2xl overflow-hidden bg-gray-900 border border-gray-800 shadow-2xl shrink-0 relative z-0 transform transition-transform ${item.imageYClass}`}>
-                                    <img
-                                        src={item.img}
-                                        alt={item.title}
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
-                                <div
-                                    className={`parallax-text absolute z-20 w-[60vw] sm:w-[340px] bg-gray-900/90 backdrop-blur-md border border-gray-700/60 p-6 rounded-xl shadow-2xl space-y-2 pointer-events-none ${item.textPositionClass} ${item.imageYClass}`}
-                                >
-                                    <span className="text-xs font-mono text-emerald-400 block">
-                                        {item.tag}
-                                    </span>
-                                    <h3 className="font-serif text-xl sm:text-2xl font-medium text-white leading-snug">
-                                        {item.title}
-                                    </h3>
-                                    <p className="text-xs sm:text-sm text-gray-300 font-sans leading-relaxed">
-                                        {item.desc}
-                                    </p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
+        <div ref={mainWrap} className="relative w-full h-screen overflow-hidden text-white select-none">
+            {sections.map((sec, index) => (
+                <ProjectContent
+                    key={sec.id}
+                    title={sec.title}
+                    content={sec.content}
+                    titleClass={`slow-title-${index}`}
+                    textClass={`parallax-text-${index}`}
+                    // No swipe at start
+                    isCurtain={index > 0}
+                    sectionWrapperRef={(el) => (sectionWrapperRefs.current[index] = el)}
+                    horizontalTrackRef={(el) => (horizontalTrackRefs.current[index] = el)}
+                    swipeSizeRef={(el) => (swipeSizeRefs.current[index] = el)}
+                    swipeContentRef={(el) => (swipeContentRefs.current[index] = el)}
+                    curtainBackgroundRef={(el) => (curtainBackgroundRefs.current[index] = el)}
+                />
+            ))}
         </div>
     )
 }
 
-export default ProjectSection 
+export default ProjectSection
