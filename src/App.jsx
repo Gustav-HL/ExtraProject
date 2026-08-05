@@ -6,10 +6,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Navbar from "./components/Nav/Navbar.jsx"
 import Calendar from "./components/Calendar/Calendar.jsx"
 import ProjectSection from "./components/ProjectSection/ProjectSection.jsx"
-import Wind from "./components/Wind.jsx"
+import Wind from "./components/Particles.jsx"
 import Light from "./components/Light.jsx"
 import './App.css'
 import IntroPage from './components/IntroPage/IntroPage.jsx'
+import WorksPage from './components/Works/WorksPage.jsx'
 
 function App() {
   // const [projects, setProjects] = useState([])
@@ -75,7 +76,20 @@ function App() {
   // if (error) return <div className="p-8 text-red-500">Error {error}</div>
 
   const [currentTheme, setCurrentTheme] = useState('teal')
+  const [activeView, setActiveView] = useState('home')
+  const lenisRef = useRef(null)
 
+
+  // Removie GSAP scrollTrigger functions when changing page content
+  const handleViewChange = (newView) => {
+    ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(0, { immediate: true })
+    }
+    window.scrollTo(0, 0)
+    setActiveView(newView)
+  }
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -83,6 +97,8 @@ function App() {
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
     })
+
+    lenisRef.current = lenis
 
     lenis.on('scroll', ScrollTrigger.update)
 
@@ -94,16 +110,26 @@ function App() {
 
     return () => {
       lenis.destroy()
+      lenisRef.current = null
     }
   }, [])
-return (
+
+  return (
     <div className="relative min-h-screen w-full">
       <Light theme={currentTheme} />
-      <Wind />
+      <Wind theme={currentTheme}/>
+
       <div className="relative z-10">
-        <Navbar />
-        <IntroPage />
-        <ProjectSection onThemeChange={setCurrentTheme} />
+        <Navbar activeView={activeView} onViewChange={handleViewChange} />
+
+        {activeView === 'works' ? (
+          <WorksPage onBack={() => handleViewChange('home')} />
+        ) : (
+          <>
+            <IntroPage />
+            <ProjectSection onThemeChange={setCurrentTheme} />
+          </>
+        )}
       </div>
     </div>
   )

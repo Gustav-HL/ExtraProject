@@ -67,7 +67,7 @@ const data = [
     {
         id: 'sec-3',
         title: 'Projekt tres',
-        theme: 'emerald',
+        theme: 'forest',
         content: [
             {
                 id: 7,
@@ -110,11 +110,19 @@ const ProjectSection = ({ onThemeChange }) => {
     const swipeContentRefs = useRef([])
     const curtainBackgroundRefs = useRef([])
 
-    // Format content with random positions and parallax speeds.
+    // Format content with random poistions and palalax speeds.
     const formatContent = (data) => {
         const imageYOffsets = ['-translate-y-4', 'translate-y-4', 'translate-y-0']
-        const textVerticalPositions = ['top-1/2 -translate-y-1/2', 'top-1/3', 'bottom-1/3']
-        const textHorizontalOffsets = ['left-8 sm:left-16', 'left-1/4', 'left-1/3', '-left-8 sm:-left-16']
+        
+        // Set of random cooridinates in Y axis for text boxes
+        const textVerticalPositions = [
+            'top-4', 
+            'top-1/4', 
+            'top-1/2 -translate-y-1/2', 
+            'top-2/3', 
+            'bottom-4'
+        ]
+        const textHorizontalOffsets = ['left-8 sm:left-16']
 
         return data.map((project) => ({
             ...project,
@@ -159,7 +167,7 @@ const ProjectSection = ({ onThemeChange }) => {
             const wipeDuration = 1
             const extraDrift = 120
 
-            // Create the main timeline that will be scrolled through
+            // Create the main timeline that will be scrolled trhough
             const scrollHandler = gsap.timeline({
                 scrollTrigger: {
                     trigger: wrapper,
@@ -217,7 +225,7 @@ const ProjectSection = ({ onThemeChange }) => {
                             const isMovingForward = scrollHandler.scrollTrigger.direction > 0
                             const activeSec = isMovingForward ? sections[nextIndex] : sections[i]
 
-                            // Hide the previous content
+                            // Hide the previous content and 
                             if (isMovingForward && sectionWrapperRefs.current[i]) {
                                 gsap.set(sectionWrapperRefs.current[i], { display: 'none' })
                             } else if (!isMovingForward && sectionWrapperRefs.current[i]) {
@@ -234,7 +242,10 @@ const ProjectSection = ({ onThemeChange }) => {
 
         }, mainWrap)
 
-        return () => context.revert()
+        return () => {
+            context.revert()
+            ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+        }
     }, [sections, onThemeChange])
 
     return (

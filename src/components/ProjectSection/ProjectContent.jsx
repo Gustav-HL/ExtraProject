@@ -10,7 +10,8 @@ const ProjectContent = ({
     textClass,
     isCurtain = false,
     swipeContentRef,
-    curtainBackgroundRef
+    curtainBackgroundRef,
+    onReturnHome 
 }) => {
     const sectionBlueprint = (
         <div className="w-full h-screen overflow-hidden flex items-center relative">
@@ -65,6 +66,9 @@ const ProjectContent = ({
                                                             GitHub
                                                         </a>
                                                     )}
+                                                     <button onClick={onReturnHome} className="text-xs uppercase tracking-widest text-emerald-400 hover:underline">
+                                                        Backo
+                                                    </button>
                                                 </div>
                                             ))}
                                         </div>
