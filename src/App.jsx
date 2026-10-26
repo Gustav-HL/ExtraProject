@@ -1,126 +1,137 @@
-import { useState, useEffect } from 'react'
-import { GitHubCalendar } from 'react-github-calendar';
+import { useState, useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import Lenis from 'lenis'
+import { useGSAP } from '@gsap/react'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import Navbar from "./components/Nav/Navbar.jsx"
+import Calendar from "./components/Calendar/Calendar.jsx"
+import ProjectSection from "./components/ProjectSection/ProjectSection.jsx"
+import Wind from "./components/Particles.jsx"
+import Light from "./components/Light.jsx"
 import './App.css'
+import IntroPage from './components/IntroPage/IntroPage.jsx'
+import WorksPage from './components/Works/WorksPage.jsx'
 
 function App() {
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const GITHUB_USERNAME = "Gustav-HL";
+  // const [projects, setProjects] = useState([])
+  // const [loading, setLoading] = useState(true)
+  // const [error, setError] = useState(null)
+  // const GITHUB_USERNAME = "Gustav-HL"
+
+  // useEffect(() => {
+  //   const fetchAllProjects = async () => {
+  //     try {
+  //       setLoading(true)
+  //       setError(null)
+  //       const CACHE_KEY = 'github_portfolio_projects'
+  //       const CACHE_TIME_KEY = 'github_portfolio_time'
+  //       const DAY = 24 * 60 * 60 * 1000
+  //       const cachedData = localStorage.getItem(CACHE_KEY)
+  //       const cachedTime = localStorage.getItem(CACHE_TIME_KEY)
+
+  //       if (cachedData && cachedTime && (Date.now() - Number(cachedTime) < DAY)) {
+  //         setProjects(JSON.parse(cachedData))
+  //         setLoading(false)
+  //         return
+  //       }
+
+  //       const fetchGithubData = await fetch(
+  //         `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated`
+  //       )
+  //       if (!fetchGithubData.ok) throw new Error('Could not fetch data.')
+
+  //       const data = await fetchGithubData.json()
+  //       const myProjects = data.filter(repo => !repo.fork && repo.topics.includes('portfolio'))
+
+  //       const otherProjects = [
+  //         "Shania-a/Webbteknik-projekt",
+  //         "Shania-a/OOP-Project",
+  //         "GoblinBuilds/ChronoLogical"
+  //       ]
+
+  //       const fetchOtherRepos = otherProjects.map(async (path) => {
+  //         const res = await fetch(`https://api.github.com/repos/${path}`)
+  //         if (res.ok) return res.json()
+  //         return null
+  //       })
+
+  //       const externalData = await Promise.all(fetchOtherRepos)
+  //       const combinedProjects = [...myProjects, ...externalData].filter(Boolean)
+
+  //       combinedProjects.sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at))
+
+  //       setProjects(combinedProjects)
+  //       localStorage.setItem(CACHE_KEY, JSON.stringify(combinedProjects))
+  //       localStorage.setItem(CACHE_TIME_KEY, Date.now().toString())
+
+  //     } catch (err) {
+  //       setError(err.message)
+  //     } finally {
+  //       setLoading(false)
+  //     }
+  //   }
+  //   fetchAllProjects()
+  // }, [GITHUB_USERNAME])
+
+  // if (error) return <div className="p-8 text-red-500">Error {error}</div>
+
+  const [currentTheme, setCurrentTheme] = useState('teal')
+  const [activeView, setActiveView] = useState('works')
+  const lenisRef = useRef(null)
+
+
+  // Removie GSAP scrollTrigger functions when changing page content
+  const handleViewChange = (newView) => {
+    ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(0, { immediate: true })
+    }
+    window.scrollTo(0, 0)
+    setActiveView(newView)
+  }
 
   useEffect(() => {
-    const fetchAllProjects = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const CACHE_KEY = 'github_portfolio_projects';
-        const CACHE_TIME_KEY = 'github_portfolio_time';
-        const DAY = 24 * 60 * 60 * 1000;
-        const cachedData = localStorage.getItem(CACHE_KEY);
-        const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    })
 
-        if (cachedData && cachedTime && (Date.now() - Number(cachedTime) < DAY)) {
-          console.log("local storage used");
-          setProjects(JSON.parse(cachedData));
-          setLoading(false);
-          return;
-        }
+    lenisRef.current = lenis
 
-        const fetchGithubData = await fetch(
-          `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated`
-        );
-        if (!fetchGithubData.ok) throw new Error('Could not fetch data.');
+    lenis.on('scroll', ScrollTrigger.update)
 
-        const data = await fetchGithubData.json();
-        const myProjects = data.filter(repo => {
-          return !repo.fork && repo.topics.includes('portfolio');
-        });
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000)
+    })
 
-        const otherProjects = [
-          "Shania-a/Webbteknik-projekt",
-          "Shania-a/OOP-Project",
-          "GoblinBuilds/ChronoLogical"
-        ];
+    gsap.ticker.lagSmoothing(0)
 
-        const fetchOtherRepos = otherProjects.map(async (path) => {
-          const res = await fetch(`https://api.github.com/repos/${path}`);
-          if (res.ok) return res.json();
-          return null;
-        });
-
-        const externalData = await Promise.all(fetchOtherRepos);
-        const combinedProjects = [...myProjects, ...externalData];
-
-        combinedProjects.sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at));
-
-        setProjects(combinedProjects);
-        localStorage.setItem(CACHE_KEY, JSON.stringify(combinedProjects));
-        localStorage.setItem(CACHE_TIME_KEY, Date.now().toString());
-
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchAllProjects();
-  }, [GITHUB_USERNAME]);
+    return () => {
+      lenis.destroy()
+      lenisRef.current = null
+    }
+  }, [])
 
   return (
-    <>
-      <section id="center">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((repo) => (
-            <div
-              key={repo.id}
-              className=""
-            >
-              <div>
-                <h3 className="">
-                  {repo.name.replace(/-/g, ' ')}
-                </h3>
-                <p className="">
-                  {repo.description || "No description :("}
-                </p>
-              </div>
+    <div className="relative min-h-screen w-full">
+      <Light theme={currentTheme} />
+      <Wind theme={currentTheme}/>
 
-              <div className="flex justify-between items-center">
-                <span className="">
-                  {repo.language || "Blandat"}
-                </span>
-                <a
-                  href={repo.html_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className=""
-                >
-                  Go to github &rarr;
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <div className="relative z-10">
+        <Navbar activeView={activeView} onViewChange={handleViewChange} />
 
-      <div className="ticks"></div>
-      <section id="next-steps">
-        <h2 className="text-2xl font-bold mb-4">GitHub Activity</h2>
-        <div style={{ display: 'flex', justifyContent: 'center', overflowX: 'auto', padding: '10px' }}>
-          <GitHubCalendar
-            username="Gustav-HL"
-            labels={{
-              totalCount: '{{count}} contributions',
-            }}
-            blockSize={12}
-            blockMargin={4}
-            colorScheme="light"
-          />
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+        {activeView === 'works' ? (
+          <WorksPage onBack={() => handleViewChange('home')} />
+        ) : (
+          <>
+            <IntroPage />
+            <ProjectSection onThemeChange={setCurrentTheme} />
+          </>
+        )}
+      </div>
+    </div>
   )
 }
 

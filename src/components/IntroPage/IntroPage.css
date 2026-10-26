@@ -1,0 +1,12 @@
+.frontpage-quote {
+    position: absolute;
+    z-index: 10;
+    top: 34%;
+    right: 20%;
+    left: auto;
+    transform: none;
+    color: #fff;
+    font-size: 6.5px;
+    text-align: right;
+}
+
