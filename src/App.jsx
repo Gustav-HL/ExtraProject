@@ -76,7 +76,7 @@ function App() {
   // if (error) return <div className="p-8 text-red-500">Error {error}</div>
 
   const [currentTheme, setCurrentTheme] = useState('teal')
-  const [activeView, setActiveView] = useState('home')
+  const [activeView, setActiveView] = useState('works')
   const lenisRef = useRef(null)
 
 

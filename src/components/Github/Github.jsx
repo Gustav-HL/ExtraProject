@@ -1,6 +1,8 @@
-export function Github({ projects }) {
+import React from 'react'
+
+const Github = ({ projects = [] }) => {
   return (
-    <div className="w-full h-screen overflow-y-auto snap-y snap-mandatory">
+    <>
       {projects.map((repo) => (
         <div
           key={repo.id || repo.name}
@@ -30,6 +32,8 @@ export function Github({ projects }) {
           </div>
         </div>
       ))}
-    </div>
+    </>
   )
 }
+
+export default Github
