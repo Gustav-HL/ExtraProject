@@ -8,13 +8,12 @@ import Calendar from "./components/Calendar/Calendar.jsx"
 import ProjectSection from "./components/ProjectSection/ProjectSection.jsx"
 import './App.css'
 
-// 1 sektion = 1 GitHub-repo
 const sectionsBlueprint = [
   {
     id: 'sec-1',
-    repo: 'Webbteknik-projekt',
+    repo: 'IoT_project',
     theme: 'teal',
-    // title: 'Valfri egen titel', // Lämna tom för att ta namn från GitHub
+    fetchReadme: true,
     content: [
       {
         id: 1,
@@ -44,6 +43,7 @@ const sectionsBlueprint = [
     id: 'sec-2',
     repo: 'OOP-Project',
     theme: 'night',
+    fetchReadme: false,
     content: [
       {
         id: 5,
@@ -62,6 +62,7 @@ const sectionsBlueprint = [
     id: 'sec-3',
     repo: 'GoblinBuilds/ChronoLogical',
     theme: 'forest',
+    fetchReadme: false,
     content: [
       {
         id: 7,
@@ -85,6 +86,7 @@ const sectionsBlueprint = [
 
 function App() {
   const [projects, setProjects] = useState([])
+  const [readmes, setReadmes] = useState({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const GITHUB_USERNAME = "Gustav-HL"
@@ -161,7 +163,42 @@ function App() {
     fetchAllProjects()
   }, [GITHUB_USERNAME])
 
-  // Kombinera sektionerna med GitHub-data
+  useEffect(() => {
+    if (!projects.length) return
+
+    const loadReadmes = async () => {
+      const readmeMap = {}
+      for (const sec of sectionsBlueprint) {
+        if (!sec.fetchReadme || !sec.repo) continue
+
+        const gitData = projects.find((r) => {
+          const target = sec.repo.toLowerCase()
+          return (
+            r.name.toLowerCase() === target ||
+            r.full_name?.toLowerCase() === target ||
+            r.name.toLowerCase() === target.split('/').pop()
+          )
+        })
+
+        if (gitData) {
+          const fullName = gitData.full_name || `${GITHUB_USERNAME}/${gitData.name}`
+          try {
+            let res = await fetch(`https://raw.githubusercontent.com/${fullName}/main/README.md`)
+            if (!res.ok) {
+              res = await fetch(`https://raw.githubusercontent.com/${fullName}/master/README.md`)
+            }
+            if (res.ok) {
+              readmeMap[sec.id] = await res.text()
+            }
+          } catch {}
+        }
+      }
+      setReadmes(readmeMap)
+    }
+
+    loadReadmes()
+  }, [projects, GITHUB_USERNAME])
+
   const sections = useMemo(() => {
     return sectionsBlueprint.map((sec, secIndex) => {
       const gitData = sec.repo
@@ -189,14 +226,16 @@ function App() {
         ...sec,
         title: resolvedTitle,
         githubUrl: gitData?.html_url || null,
+        readme: readmes[sec.id] || null,
         content: mergedContent
       }
     })
-  }, [projects])
+  }, [projects, readmes])
 
   return (
     <div className="relative min-h-screen w-full">
       <ProjectSection sections={sections} />
+      <Calendar username={GITHUB_USERNAME}/>
     </div>
   )
 }

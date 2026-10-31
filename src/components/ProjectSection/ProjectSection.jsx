@@ -9,6 +9,7 @@ const ProjectSection = ({ sections = [] }) => {
           key={sec.id}
           title={sec.title}
           githubUrl={sec.githubUrl}
+          readme={sec.readme}
           content={sec.content}
         />
       ))}

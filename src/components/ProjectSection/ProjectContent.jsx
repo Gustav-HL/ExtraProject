@@ -1,13 +1,27 @@
 import React from 'react'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 const ProjectContent = ({
   title,
   githubUrl,
+  readme,
   content = [],
 }) => {
+  const transformUri = (uri) => {
+    if (uri.startsWith('http://') || uri.startsWith('https://') || uri.startsWith('mailto:')) {
+      return uri
+    }
+    if (githubUrl) {
+      const cleanBase = githubUrl.replace('https://github.com/', 'https://raw.githubusercontent.com/')
+      const cleanPath = uri.replace(/^\.?\//, '')
+      return `${cleanBase}/main/${cleanPath}`
+    }
+    return uri
+  }
+
   return (
     <section className="relative w-full min-h-screen flex flex-col justify-center px-8 sm:px-20 py-20 border-b border-white/10">
-      {/* Sektionstitel och GitHub-länk */}
       <div className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-4">
         <h2 className="font-serif text-4xl sm:text-6xl font-normal tracking-tight text-white">
           {title}
@@ -24,7 +38,7 @@ const ProjectContent = ({
         )}
       </div>
 
-      {/* Grid med projektets kort */}
+      {/* Projektets kort */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
         {content.map((item) => (
           <div key={item.id} className="relative flex flex-col">
@@ -81,6 +95,25 @@ const ProjectContent = ({
           </div>
         ))}
       </div>
+
+      {/* GitHub README med stöd för bilder, tabeller, listor och styling */}
+      {readme && (
+        <div className="mt-12 p-8 bg-gray-900/90 border border-gray-800 shadow-2xl max-h-[750px] overflow-y-auto">
+          <div className="border-b border-gray-800 pb-3 mb-6 flex items-center justify-between">
+            <span className="text-xs font-mono tracking-wider text-teal-400 uppercase">
+              README.md
+            </span>
+          </div>
+          <div className="readme-markdown text-gray-300 text-sm leading-relaxed">
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              urlTransform={transformUri}
+            >
+              {readme}
+            </ReactMarkdown>
+          </div>
+        </div>
+      )}
     </section>
   )
 }
