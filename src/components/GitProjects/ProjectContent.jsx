@@ -23,7 +23,7 @@ const ProjectContent = ({
 
   return (
     <section className="relative w-full min-h-screen flex flex-col justify-center px-8 sm:px-20 py-20 border-b border-white/10">
-      <div className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-4">
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-4 ">
         <h2 className="font-serif text-4xl sm:text-6xl font-normal tracking-tight text-white">
           {title}
         </h2>
@@ -34,7 +34,7 @@ const ProjectContent = ({
             rel="noopener noreferrer"
             className="px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 transition text-sm text-teal-300 font-mono"
           >
-            GitHub Källkod &rarr;
+            GitHub Repo
           </a>
         )}
       </div>
@@ -95,8 +95,11 @@ const ProjectContent = ({
           </div>
         ))}
       </div>
-      {readme && (
-        <div className="mt-12 p-8 bg-gray-900/90 border border-gray-800 shadow-2xl max-h-[750px] overflow-y-auto">
+        {readme && (
+        <div 
+          data-lenis-prevent="true"
+          className="relative z-20 overscroll-contain mt-12 p-8 bg-gray-900/90 border border-gray-800 shadow-2xl max-h-[750px] overflow-y-auto"
+        >
           <div className="border-b border-gray-800 pb-3 mb-6 flex items-center justify-between">
             <span className="text-xs font-mono tracking-wider text-teal-400 uppercase">
               README.md

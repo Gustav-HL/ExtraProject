@@ -212,7 +212,7 @@ const WorksPage = ({ githubUsername = "Gustav-HL" }) => {
   return (
     <div className="w-full">
       <ProjectSection sections={sections} />
-      <Calendar />
+      <Calendar username={githubUsername}/>
     </div>
   )
 }

@@ -30,11 +30,8 @@ const ProjectSection = ({ sections = [] }) => {
     <section className="w-full min-h-screen px-6 sm:px-16 py-20 text-white">
       <div className="mb-12 border-b border-white/10 pb-6">
         <h1 className="font-serif text-4xl sm:text-6xl font-normal tracking-tight text-white">
-          Selected Works
+          My Projects Gallery
         </h1>
-        <p className="text-gray-400 text-sm mt-2 font-mono">
-          Some of my projects
-        </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -57,7 +54,7 @@ const ProjectSection = ({ sections = [] }) => {
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center font-mono text-xs text-gray-500">
-                    No image available
+                    No image available :(
                   </div>
                 )}
               </div>
@@ -89,7 +86,7 @@ const ProjectSection = ({ sections = [] }) => {
                       onClick={(e) => e.stopPropagation()}
                       className="text-gray-400 hover:text-white transition-colors"
                     >
-                      GitHub &rarr;
+                      GitHub repo
                     </a>
                   )}
                 </div>

@@ -115,7 +115,7 @@ const Light = ({ theme = 'teal' }) => {
 
     const render = () => {
       context.clearRect(0, 0, width, height)
-      context.shadowBlur = 15
+      // context.shadowBlur = 15
       context.shadowColor = activeTheme.shadow
       context.globalCompositeOperation = 'lighter'
 
