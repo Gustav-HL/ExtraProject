@@ -33,11 +33,10 @@ npm run dev
 
 ### Dependencies, Libraries and Frameworks
 
-**[React](https://react.dev/)** – Framework
+**[React](https://react.dev/)** Framework
 **[Tailwind CSS](https://tailwindcss.com/)** For a majority of stylings
-**[GSAP](https://gsap.com/)** – For animations
+**[GSAP](https://gsap.com/)** For animations
 **[Lenis](https://lenis.darkroom.engineering/)** For smooth scrolling with GSAP 
-
 **[react-github-calendar](https://github.com/grubersjoe/react-github-calendar)** Fetches and shows the activity calendar from github
 **[react-markdown](https://github.com/remarkjs/react-markdown)** Renders and converts readme files to react components
 **[remark-gfm](https://github.com/remarkjs/remark-gfm)** Plugin for react-markdown to get more parts like tables
