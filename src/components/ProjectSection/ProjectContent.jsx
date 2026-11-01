@@ -8,6 +8,7 @@ const ProjectContent = ({
   readme,
   content = [],
 }) => {
+
   const transformUri = (uri) => {
     if (uri.startsWith('http://') || uri.startsWith('https://') || uri.startsWith('mailto:')) {
       return uri
@@ -38,7 +39,6 @@ const ProjectContent = ({
         )}
       </div>
 
-      {/* Projektets kort */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
         {content.map((item) => (
           <div key={item.id} className="relative flex flex-col">
@@ -95,8 +95,6 @@ const ProjectContent = ({
           </div>
         ))}
       </div>
-
-      {/* GitHub README med stöd för bilder, tabeller, listor och styling */}
       {readme && (
         <div className="mt-12 p-8 bg-gray-900/90 border border-gray-800 shadow-2xl max-h-[750px] overflow-y-auto">
           <div className="border-b border-gray-800 pb-3 mb-6 flex items-center justify-between">
