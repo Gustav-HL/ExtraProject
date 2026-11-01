@@ -3,6 +3,8 @@ This is a project i have been working on for months, i am unfinished so i'm turn
 
 I moved the start page to WorksPage where i have some projects with data fetched from GitHub open API.
 
+There is no .env file as there is no secret data transfer, i could more my username to a .env file but i find that unnecessary.
+
 
 ## Requirements
 
