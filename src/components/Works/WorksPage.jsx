@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import ProjectSection from '../GitProjects/ProjectSection.jsx'
-import Calendar from '../Calendar/Calendar.jsx'
 
+// A bluprint for what will be renderd on the website, links the data with a spesific repo from github and what data will be presented form github API
 const sectionsBlueprint = [
   {
     id: 'sec-1',
@@ -65,23 +65,25 @@ const sectionsBlueprint = [
 const WorksPage = ({ githubUsername = "Gustav-HL" }) => {
   const [projects, setProjects] = useState([])
   const [readmes, setReadmes] = useState({})
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+//   const [loading, setLoading] = useState(true)
+//   const [error, setError] = useState(null)
 
+  // Fetches data from Github API caching the data in localstorage for 24 hours to not reach the 60 call per hour limit
   useEffect(() => {
     const fetchAllProjects = async () => {
       try {
-        setLoading(true)
-        setError(null)
+        // setLoading(true)
+        // setError(null)
+
         const CACHE_KEY = 'github_portfolio_projects'
         const CACHE_TIME_KEY = 'github_portfolio_time'
         const DAY = 24 * 60 * 60 * 1000
         const cachedData = localStorage.getItem(CACHE_KEY)
         const cachedTime = localStorage.getItem(CACHE_TIME_KEY)
 
+        // Handles the caching of data
         if (cachedData && cachedTime && (Date.now() - Number(cachedTime) < DAY)) {
           setProjects(JSON.parse(cachedData))
-          setLoading(false)
           return
         }
 
@@ -93,6 +95,7 @@ const WorksPage = ({ githubUsername = "Gustav-HL" }) => {
         const data = await fetchGithubData.json()
         const myProjects = data.filter(repo => !repo.fork && repo.topics.includes('portfolio'))
 
+        // Fetch projects outside of personal repo
         const otherProjects = [
           "Shania-a/Webbteknik-projekt",
           "Shania-a/OOP-Project",
@@ -107,7 +110,7 @@ const WorksPage = ({ githubUsername = "Gustav-HL" }) => {
 
         const externalData = await Promise.all(fetchOtherRepos)
         const combinedProjects = [...myProjects, ...externalData].filter(Boolean)
-
+        // Fetch contributors from each repo
         const projectsWithContributors = await Promise.all(
           combinedProjects.map(async (repo) => {
             try {
@@ -119,27 +122,26 @@ const WorksPage = ({ githubUsername = "Gustav-HL" }) => {
                 github: u.html_url
               }))
               return { ...repo, contributors }
-            } catch {
+            } 
+            catch {
               return { ...repo, contributors: [] }
             }
           })
         )
 
-        projectsWithContributors.sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at))
-
         setProjects(projectsWithContributors)
         localStorage.setItem(CACHE_KEY, JSON.stringify(projectsWithContributors))
         localStorage.setItem(CACHE_TIME_KEY, Date.now().toString())
 
-      } catch (err) {
-        setError(err.message)
-      } finally {
-        setLoading(false)
+      } 
+
+      catch (err) {
+        console.error('Failed to fetch GitHub projects:', err)
       }
     }
     fetchAllProjects()
   }, [githubUsername])
-
+  // Fetch Readme.md for projects that has fetchReadMe as true.
   useEffect(() => {
     if (!projects.length) return
 
@@ -148,12 +150,11 @@ const WorksPage = ({ githubUsername = "Gustav-HL" }) => {
       for (const sec of sectionsBlueprint) {
         if (!sec.fetchReadme || !sec.repo) continue
 
+        // Matches repo by name 
         const gitData = projects.find((r) => {
           const target = sec.repo.toLowerCase()
           return (
-            r.name.toLowerCase() === target ||
-            r.full_name?.toLowerCase() === target ||
-            r.name.toLowerCase() === target.split('/').pop()
+            r.name.toLowerCase() === target || r.full_name?.toLowerCase() === target
           )
         })
 
@@ -175,33 +176,32 @@ const WorksPage = ({ githubUsername = "Gustav-HL" }) => {
 
     loadReadmes()
   }, [projects, githubUsername])
-
+  // Combine blueprint data with data gathered from github
   const sections = useMemo(() => {
+
     return sectionsBlueprint.map((sec, secIndex) => {
       const gitData = sec.repo
         ? projects.find((r) => {
             const target = sec.repo.toLowerCase()
             return (
-              r.name.toLowerCase() === target ||
-              r.full_name?.toLowerCase() === target ||
-              r.name.toLowerCase() === target.split('/').pop()
+              r.name.toLowerCase() === target || r.full_name?.toLowerCase() === target
             )
           })
         : null
 
-      const resolvedTitle = sec.title || gitData?.name.replace(/[-_]/g, ' ') || `Projekt ${secIndex + 1}`
-      const resolvedCollaborators = gitData?.contributors || []
+      const foundTitle = sec.title || gitData?.name.replace(/[-_]/g, ' ') || `Projekt ${secIndex + 1}`
+      const foundCollaberatos = gitData?.contributors || []
 
       const mergedContent = sec.content.map((item) => ({
         ...item,
-        title: item.title || resolvedTitle,
+        title: item.title || foundTitle,
         githubUrl: gitData?.html_url || null,
-        collaborators: item.collaborators || (item.isEndCard ? resolvedCollaborators : null)
+        collaborators: item.collaborators || (item.isEndCard ? foundCollaberatos : null)
       }))
 
       return {
         ...sec,
-        title: resolvedTitle,
+        title: foundTitle,
         githubUrl: gitData?.html_url || null,
         readme: readmes[sec.id] || null,
         content: mergedContent

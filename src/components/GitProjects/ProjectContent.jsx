@@ -8,7 +8,7 @@ const ProjectContent = ({
   readme,
   content = [],
 }) => {
-
+  // Changes links in ReadMe to raw.githubusercontent links so that images are shown in the window
   const transformUri = (uri) => {
     if (uri.startsWith('http://') || uri.startsWith('https://') || uri.startsWith('mailto:')) {
       return uri

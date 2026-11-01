@@ -3,8 +3,9 @@ import ProjectContent from './ProjectContent.jsx'
 import Calendar from '../Calendar/Calendar.jsx'
 
 const ProjectSection = ({ sections = [], githubUsername = "Gustav-HL"  }) => {
+  // State for highlightning what project is currently shown. If its null show the gallery.
   const [activeSection, setActiveSection] = useState(null)
-
+  // View for the projects
   if (activeSection) {
     return (
       <div className="w-full">
@@ -26,7 +27,7 @@ const ProjectSection = ({ sections = [], githubUsername = "Gustav-HL"  }) => {
       </div>
     )
   }
-
+  // Gallery view and github calendar 
   return (
     <section className="w-full min-h-screen px-6 sm:px-16 py-20 text-white">
       <div className="mb-12 border-b border-white/10 pb-6">
@@ -37,6 +38,7 @@ const ProjectSection = ({ sections = [], githubUsername = "Gustav-HL"  }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {sections.map((sec) => {
+          // gathers a thumbnail from the sections content
           const thumbnail = sec.content?.find((c) => c.img)?.img
           const description = sec.content?.find((c) => c.desc)?.desc
 
