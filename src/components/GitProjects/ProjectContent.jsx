@@ -27,16 +27,6 @@ const ProjectContent = ({
         <h2 className="font-serif text-4xl sm:text-6xl font-normal tracking-tight text-white">
           {title}
         </h2>
-        {githubUrl && (
-          <a
-            href={githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 transition text-sm text-teal-300 font-mono"
-          >
-            GitHub Repo
-          </a>
-        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
@@ -95,8 +85,8 @@ const ProjectContent = ({
           </div>
         ))}
       </div>
-        {readme && (
-        <div 
+      {readme && (
+        <div
           data-lenis-prevent="true"
           className="relative z-20 overscroll-contain mt-12 p-8 bg-gray-900/90 border border-gray-800 shadow-2xl max-h-[750px] overflow-y-auto"
         >

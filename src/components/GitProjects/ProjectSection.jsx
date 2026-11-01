@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import ProjectContent from './ProjectContent.jsx'
+import Calendar from '../Calendar/Calendar.jsx'
 
-const ProjectSection = ({ sections = [] }) => {
+const ProjectSection = ({ sections = [], githubUsername = "Gustav-HL"  }) => {
   const [activeSection, setActiveSection] = useState(null)
 
   if (activeSection) {
@@ -95,6 +96,7 @@ const ProjectSection = ({ sections = [] }) => {
           )
         })}
       </div>
+      <Calendar username={githubUsername} />
     </section>
   )
 }
