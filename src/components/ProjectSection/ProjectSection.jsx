@@ -101,7 +101,6 @@ const data = [
         ]
     }
 ]
-
 const ProjectSection = ({ onThemeChange }) => {
     const mainWrap = useRef(null)
     const sectionWrapperRefs = useRef([])

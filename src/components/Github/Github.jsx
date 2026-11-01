@@ -26,7 +26,7 @@ const Github = ({ projects = [] }) => {
                 rel="noopener noreferrer"
                 className="text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition-colors"
               >
-                Go to github &rarr;
+                Go to github
               </a>
             </div>
           </div>
