@@ -26,7 +26,7 @@ git clone https://github.com/Gustav-HL/ExtraProjekt.git
 npm install
 ```
 
-### 3. run the program
+### 3. Run the program
 ```bash
 npm run dev
 ```
