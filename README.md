@@ -1,5 +1,5 @@
 # Portfolio and Project Showcase
-This is a project i have been working on for months, i am unfinished so i'm turning in a part of the work as i feel the requirements are med for the VG assignment but i will keep developing this thing if i want to continue in the direction. 
+This is a project i have been working on for months, i am unfinished so i'm turning in a part of the work as i feel the requirements are met for the VG assignment but i will keep developing this thing if i want to continue in the direction. 
 
 I moved the start page to WorksPage where i have some projects with data fetched from GitHub open API.
 
